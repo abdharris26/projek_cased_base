@@ -1,0 +1,1 @@
+print("ayok makan gacoan")
