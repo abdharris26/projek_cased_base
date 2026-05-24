@@ -1,8 +1,16 @@
 class Lowongan:
-    def __init__(self, id_lowongan, judul, perusahaan, gaji, tanggal, status="Aktif"):
+    def __init__(self, id_lowongan, posisi, perusahaan, gaji, tanggal, status):
         self.id_lowongan = id_lowongan
-        self.judul = judul
+        self.posisi = posisi
         self.perusahaan = perusahaan
-        self.gaji = float(gaji)
+        self.gaji = gaji
         self.tanggal = tanggal
         self.status = status
+
+    def tampilkan(self):
+        print("ID :", self.id_lowongan)
+        print("Judul :", self.posisi)
+        print("Perusahaan :", self.perusahaan)
+        print("Gaji :", self.gaji)
+        print("Tanggal :", self.tanggal)
+        print("Status :", self.status)
