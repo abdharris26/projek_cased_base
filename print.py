@@ -1,1 +1,0 @@
-print("ayok makan gacoan")
