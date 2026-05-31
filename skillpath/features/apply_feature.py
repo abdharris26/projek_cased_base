@@ -1,11 +1,7 @@
 from structures.queue import Queue
 from structures.stack import Stack
 
-antrian = Queue()
-undo = Stack()
-
-
-def apply_job(nama, pekerjaan):
+def apply_job(antrian, undo, nama, pekerjaan):
     data = nama + " melamar " + pekerjaan
 
     antrian.enqueue(data)
@@ -14,7 +10,7 @@ def apply_job(nama, pekerjaan):
     print("Lamaran berhasil dikirim")
 
 
-def undo_apply():
+def undo_apply(undo):
     data = undo.pop()
 
     if data is not None:

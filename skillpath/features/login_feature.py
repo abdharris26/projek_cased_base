@@ -1,12 +1,6 @@
 from structures.hash_table import HashTable
 
-akun = HashTable()
-
-akun.tambah_user("admin", "123")
-akun.tambah_user("user", "123")
-
-
-def login():
+def login(akun):
     username = input("Username : ")
     password = input("Password : ")
 

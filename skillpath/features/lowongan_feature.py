@@ -1,6 +1,5 @@
 from models.lowongan import Lowongan
 
-
 def tambah_lowongan(linked_list):
     id_lowongan = input("ID : ")
     posisi = input("posisi : ")

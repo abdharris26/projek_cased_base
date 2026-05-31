@@ -9,7 +9,7 @@ class Lowongan:
 
     def tampilkan(self):
         print("ID :", self.id_lowongan)
-        print("Judul :", self.posisi)
+        print("Posisi :", self.posisi)
         print("Perusahaan :", self.perusahaan)
         print("Gaji :", self.gaji)
         print("Tanggal :", self.tanggal)
