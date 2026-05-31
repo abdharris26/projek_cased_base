@@ -95,8 +95,7 @@ SkillPath/
 ├── utils/
 │   ├── sorting.py
 │   ├── searching.py
-│   ├── file_handler.py
-│   └── recursive.py
+│   └── file_handler.py
 │
 ├── features/
 │   ├── login_feature.py
