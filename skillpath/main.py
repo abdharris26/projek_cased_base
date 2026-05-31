@@ -15,10 +15,17 @@ from structures.tree import TreeNode
 #IMPORT FEATURES
 #==================================================
 from features.login_feature import login
-from features.lowongan_feature import tambah_lowongan
-from features.apply_feature import apply_job
-from features.apply_feature import undo_apply
+from features.apply_feature import apply_job, undo_apply
 from features.recommendation_feature import tampil_rekomendasi
+
+# IMPORT FITUR LOWONGAN LENGKAP
+from features.lowongan_feature import (
+    tambah_lowongan, 
+    edit_lowongan, 
+    hapus_lowongan, 
+    sorting_lowongan, 
+    cari_lowongan_by_keyword
+)
 
 #==================================================
 #IMPORT MODELS
@@ -28,77 +35,50 @@ from models.pelamar import Pelamar
 from models.hrd import HRD
 
 #==================================================
-#SINGLE LINKED LIST (DATA LOWONGAN)
+#ININISIALISASI DATA STRUCTURES
 #==================================================
 data_lowongan = SingleLinkedList() 
-
-#==================================================
-#DOUBLE LINKED LIST (HISTORI LAMARAN)
-#==================================================
 histori_lamaran = DoubleLinkedList()
+undo = Stack()
+antrian = Queue()
 
-#==================================================
-#CIRCULAR LINKED LIST (HOT JOBS)
-#==================================================
+# CIRCULAR LINKED LIST (HOT JOBS)
 hot_jobs = CircularLinkedList()
-
 hot_jobs.tambah("AI Support")
 hot_jobs.tambah("Data Analyst")
 hot_jobs.tambah("Cyber Security")
 
-#==================================================
-#STACK (UNDO APPLY)
-#==================================================
-undo = Stack()
-
-#==================================================
-#QUEUE (ANTRIAN PELAMAR)
-#==================================================
-antrian = Queue()
-
-#==================================================
-#HASH TABLE (LOGIN USER)
-#==================================================
+# HASH TABLE (LOGIN USER)
 akun = HashTable()
-
 akun.tambah_user("admin", "123")
 akun.tambah_user("user", "123")
 
-#==================================================
-#GRAPH (REKOMENDASI)
-#==================================================
+# GRAPH (REKOMENDASI)
 graph = Graph()
-
 graph.tambah_relasi("Python", "Python Developer")
 graph.tambah_relasi("Design", "UI UX Designer")
 
-#==================================================
-#TREE (STRUKTUR PERUSAHAAN)
-#==================================================
+# TREE (STRUKTUR PERUSAHAAN)
 perusahaan = TreeNode("CEO")
-
 hrd = TreeNode("HRD")
 finance = TreeNode("Finance")
 it = TreeNode("IT Division")
-
 backend = TreeNode("Backend Developer")
 frontend = TreeNode("Frontend Developer")
 cyber = TreeNode("Cyber Security")
 
-#MENGHUBUNGKAN TREE
 perusahaan.tambah_child(hrd)
 perusahaan.tambah_child(finance)
 perusahaan.tambah_child(it)
-
 it.tambah_child(backend)
 it.tambah_child(frontend)
 it.tambah_child(cyber)
 
 #==================================================
-#DATA USER
+#DATA USER LOGGED IN
 #==================================================
+role_user = None  # Menyimpan role: 'admin', 'user', atau None jika belum login
 nama_user = " "
-#SET
 skill_user = set()
 
 #==================================================
@@ -107,99 +87,109 @@ skill_user = set()
 jalan = True
 
 while jalan:
-
     print("\n====== SKILLPATH ======")
+    if role_user is not None:
+        print(f"--- [STATUS: LOGGED IN AS {role_user.upper()} ({nama_user})] ---")
+    else:
+        print("--- [STATUS: BELUM LOGIN] ---")
+        
     print("1. Login")
-    print("2. Tambah Lowongan")
-    print("3. Tampilkan Lowongan")
-    print("4. Apply Job")
-    print("5. Undo Apply")
-    print("6. Rekomendasi") 
-    print("7. Hot Jobs")
-    print("8. Histori Lamaran")
-    print("9. Tambah Skill")
-    print("10. Tampilkan Profil")
-    print("11. Struktur Perusahaan")
-    print("12. Proses Antrian Pelamar")
-    print("13. Keluar")
+    print("2. Tambah Lowongan (Admin)")
+    print("3. Tampilkan Semua Lowongan")
+    print("4. Edit Lowongan")
+    print("5. Hapus Lowongan (Admin)")
+    print("6. Sorting Lowongan (Admin)")
+    print("7. Cari Lowongan")
+    print("8. Hot Jobs")
+    print("9. Rekomendasi")
+    print("10. Tambah Skill")
+    print("11. Apply Job")
+    print("12. Undo Apply")
+    print("13. Histori Lamaran")
+    print("14. Tampilkan Profil")
+    print("15. Struktur Perusahaan")
+    print("16. Proses Antrian Pelamar")
+    print("17. Keluar / Logout")
 
-    pilih = input("Pilih menu : ")
+    pilih = input("\nPilih menu : ")
 
-    #==================================================
-    #HASH TABLE (LOGIN)
-    #==================================================
+    # ==================================================
+    # VALIDASI HAK AKSES (ROLE-BASED ACCESS CONTROL)
+    # ==================================================
+    
+    # 1. Jika belum login, hanya boleh akses menu 1, 3, 7, 8, 15, dan 17
+    if role_user is None and pilih not in ["1", "3", "7", "8", "15", "17"]:
+        print("\n[!] Akses ditolak! Anda harus login (Menu 1) terlebih dahulu.")
+        continue
+        
+    # 2. Jika login sebagai USER, dilarang mengakses menu khusus ADMIN (2, 5, 6, 16)
+    elif role_user == "user" and pilih in ["2", "5", "6", "16"]:
+        print(f"\n[!] Akses ditolak! Akun '{nama_user}' tidak memiliki hak akses Admin untuk menu ini.")
+        continue
+        
+    # 3. Jika login sebagai ADMIN, dilarang mengakses menu khusus USER (9, 10, 11, 12, 13, 14)
+    elif role_user == "admin" and pilih in ["9", "10", "11", "12", "13", "14"]:
+        print(f"\n[!] Akses ditolak! Menu ini hanya khusus untuk akun User/Pelamar.")
+        continue
+
+    # ==================================================
+    # EKSEKUSI MENU
+    # ==================================================
     if pilih == "1":
         hasil_login = login(akun)
         if hasil_login is not None:
             nama_user = hasil_login
+            role_user = "admin" if hasil_login == "admin" else "user"
 
-    #==================================================
-    #SINGLE LINKED LIST (TAMBAH LOWONGAN)
-    #==================================================
     elif pilih == "2":
         tambah_lowongan(data_lowongan)
 
-    #==================================================
-    #TAMPILKAN LOWONGAN
-    #==================================================
     elif pilih == "3":
         print("\n===== DATA LOWONGAN =====")
         data_lowongan.tampilkan()
 
-    #==================================================
-    #STACK, QUEUE, DOUBLE LINKED LIST (APPLY JOB)
-    #==================================================
     elif pilih == "4":
-        nama = input("Nama : ")
-        pekerjaan = input("Pekerjaan : ")
+        # Menyesuaikan parameter agar fungsi edit di lowongan_feature tahu siapa yang sedang mengedit
+        edit_lowongan(data_lowongan, role_user, nama_user)
 
-        apply_job(antrian, undo, nama, pekerjaan)
-
-        histori_lamaran.tambah(pekerjaan)
-        print("Histori lamaran ditambahkan")
-
-    #==================================================
-    #STACK (UNDO APPLY)
-    #==================================================
     elif pilih == "5":
-        undo_apply(undo)
+        hapus_lowongan(data_lowongan)
 
-    #==================================================
-    #GRAPH (REKOMENDASI)
-    #==================================================
     elif pilih == "6":
-        skill = input("Skill : ")
-        print("\n===== REKOMENDASI =====")
+        sorting_lowongan(data_lowongan)
 
-        tampil_rekomendasi(graph, skill)
-
-    #==================================================
-    #CIRCULAR LINKED LIST (HOT JOBS)
-    #==================================================
     elif pilih == "7":
+        cari_lowongan_by_keyword(data_lowongan)
+
+    elif pilih == "8":
         print("\n===== HOT JOBS =====")
         hot_jobs.tampilkan()
 
-    #==================================================
-    #HASH TABLE (HISTORI LAMARAN)
-    #==================================================
-    elif pilih == "8":
-        print("\n===== HISTORI LAMARAN =====")
-        histori_lamaran.tampil_maju()
-    
-    #==================================================
-    #SET (TAMBAH SKILL)
-    #================================================== 
     elif pilih == "9":
+        skill = input("Skill : ")
+        print("\n===== REKOMENDASI =====")
+        tampil_rekomendasi(graph, skill)
+    
+    elif pilih == "10":
         skill_baru = input("Masukkan skill: ")
-
         skill_user.add(skill_baru)
         print("Skill berhasil ditambahkan")
 
-    #==================================================
-    #DICTIONARY (TAMPILKAN PORFIL)
-    #==================================================
-    elif pilih == "10":
+    elif pilih == "11":
+        nama = input("Nama : ")
+        pekerjaan = input("Pekerjaan : ")
+        apply_job(antrian, undo, nama, pekerjaan)
+        histori_lamaran.tambah(pekerjaan)
+        print("Histori lamaran ditambahkan")
+
+    elif pilih == "12":
+        undo_apply(undo)
+
+    elif pilih == "13":
+        print("\n===== HISTORI LAMARAN =====")
+        histori_lamaran.tampil_maju()
+
+    elif pilih == "14":
         profil_user = {
             "Nama": nama_user,
             "Skill": skill_user
@@ -208,17 +198,11 @@ while jalan:
         print("Nama: ", profil_user["Nama"])
         print("Skill: ", profil_user["Skill"])
 
-    #==================================================
-    #TREE (STRUKTUR PERUSAHAAN)
-    #==================================================
-    elif pilih == "11":
+    elif pilih == "15":
         print("\n===== STRUKTUR PERUSAHAAN =====")
         perusahaan.tampilkan()
 
-    #==================================================
-    #QUEUE (PROSES ANTRIAN)
-    #==================================================
-    elif pilih == "12":
+    elif pilih == "16":
         print("\n===== PROSES ANTRIAN =====")
         proses = antrian.dequeue()
         if proses is not None:
@@ -226,12 +210,14 @@ while jalan:
         else:
             print("Antrian kosong")
 
-    #==================================================
-    #KELUAR
-    #==================================================
-    elif pilih == "13":
-        jalan = False
-        print("Program selesai")
-
+    elif pilih == "17":
+        if role_user is not None:
+            print(f"\nAkun {nama_user} berhasil logout kembali ke menu utama.")
+            role_user = None
+            nama_user = " "
+        else:
+            jalan = False
+            print("Program selesai")
+            
     else:
         print("Menu tidak tersedia")
