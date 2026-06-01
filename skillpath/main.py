@@ -49,11 +49,16 @@ hot_jobs.tambah("Data Analyst")
 hot_jobs.tambah("Cyber Security")
 
 # HASH TABLE (LOGIN USER)
+# Menyimpan username dan password pengguna.
+# Admin memiliki akses penuh sedangkan user hanya
+# dapat mengakses fitur pelamar.
 akun = HashTable()
 akun.tambah_user("admin", "123")
 akun.tambah_user("user", "123")
 
 # GRAPH (REKOMENDASI)
+# Menyimpan relasi antara skill dan pekerjaan
+# yang direkomendasikan.
 graph = Graph()
 graph.tambah_relasi("Python", "Python Developer")
 graph.tambah_relasi("Design", "UI UX Designer")

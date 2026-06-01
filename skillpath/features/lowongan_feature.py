@@ -25,7 +25,7 @@ def tambah_lowongan(linked_list):
 
 
 # ==================================================
-# 2. FITUR EDIT LOWONGAN (ROLE-BASED EDITING - REQUEST DINA)
+# 2. FITUR EDIT LOWONGAN 
 # ==================================================
 def edit_lowongan(linked_list, role, nama_user):
     print("\n===== EDIT DATA LOWONGAN =====")
