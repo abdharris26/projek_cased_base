@@ -44,17 +44,25 @@ antrian = Queue()
 
 # CIRCULAR LINKED LIST (HOT JOBS)
 hot_jobs = CircularLinkedList()
-hot_jobs.tambah("AI Support")
-hot_jobs.tambah("Data Analyst")
-hot_jobs.tambah("Cyber Security")
+data_hot_jobs = (
+    "AI Support",
+    "Data Analyst",
+    "Cyber Security"
+)
+for job in data_hot_jobs:
+    hot_jobs.tambah(job)
 
 # HASH TABLE (LOGIN USER)
 # Menyimpan username dan password pengguna.
 # Admin memiliki akses penuh sedangkan user hanya
 # dapat mengakses fitur pelamar.
 akun = HashTable()
-akun.tambah_user("admin", "123")
-akun.tambah_user("user", "123")
+daftar_akun = [
+    ["admin", "123"],
+    ["user", "123"]
+]
+for username, password in daftar_akun:
+    akun.tambah_user(username, password)
 
 # GRAPH (REKOMENDASI)
 # Menyimpan relasi antara skill dan pekerjaan
