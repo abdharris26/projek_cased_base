@@ -17,6 +17,7 @@ from structures.tree import TreeNode
 from features.login_feature import login
 from features.apply_feature import apply_job, undo_apply
 from features.recommendation_feature import tampil_rekomendasi
+from features.statistics_feature import statistik_lowongan
 
 # IMPORT FITUR LOWONGAN LENGKAP
 from features.lowongan_feature import (
@@ -160,6 +161,7 @@ while jalan:
     elif pilih == "3":
         print("\n===== DATA LOWONGAN =====")
         data_lowongan.tampilkan()
+        statistik_lowongan(data_lowongan)
 
     elif pilih == "4":
         # Menyesuaikan parameter agar fungsi edit di lowongan_feature tahu siapa yang sedang mengedit

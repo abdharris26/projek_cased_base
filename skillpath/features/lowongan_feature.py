@@ -1,5 +1,5 @@
 from models.lowongan import Lowongan
-
+from utils.file_handler import simpan_lowongan
 # ==================================================
 # 1. FITUR TAMBAH LOWONGAN (KHUSUS ADMIN)
 # ==================================================
@@ -21,6 +21,7 @@ def tambah_lowongan(linked_list):
     )
 
     linked_list.tambah(data_lowongan)
+    simpan_lowongan(linked_list)
     print("Lowongan berhasil ditambah")
 
 
@@ -49,6 +50,7 @@ def edit_lowongan(linked_list, role, nama_user):
                 current.data.gaji = int(input("Masukkan Gaji Baru: "))
                 current.data.tanggal = input("Masukkan Tanggal Baru: ")
                 current.data.status = input("Masukkan Status Baru (Aktif/Tutup): ")
+                simpan_lowongan(linked_list)
                 print("\n[+] Detail Lowongan berhasil diperbarui oleh Admin!")
             
             # KONDISI USER: Dikunci aksinya, TIDAK BISA edit teks dari admin, cuma bisa daftar/apply
@@ -60,6 +62,7 @@ def edit_lowongan(linked_list, role, nama_user):
                 pilihan = input("\nApakah Anda ingin mengubah status lowongan ini menjadi 'Melamar'? (y/n): ")
                 if pilihan.lower() == 'y':
                     current.data.status = f"Dilamar oleh {nama_user}"
+                    simpan_lowongan(linked_list)
                     print(f"\n[+] Status lowongan sukses diubah menjadi: Dilamar oleh {nama_user}")
                 else:
                     print("\n[-] Perubahan status dibatalkan.")
@@ -90,7 +93,7 @@ def hapus_lowongan(linked_list):
             else:
                 # Jika yang dihapus ada di tengah atau di ujung akhir
                 previous.next = current.next
-                
+            simpan_lowongan(linked_list)   
             print(f"Lowongan dengan ID {id_cari} berhasil dihapus!")
             ketemu = True
             break
