@@ -1,33 +1,39 @@
 # ==================================================
-# FUNGSI BUBBLE SORT GAJI
+# 4. FITUR SORTING LOWONGAN (BUBBLE SORT - KHUSUS ADMIN)
 # ==================================================
-# Fungsi ini digunakan untuk mengurutkan data
-# lowongan berdasarkan gaji dari terbesar ke terkecil
-# menggunakan algoritma Bubble Sort.
-def bubble_sort_gaji(data):
-    # Menyimpan jumlah data yang akan diurutkan
-    panjang = len(data)
+def sorting_lowongan(linked_list):
+    if linked_list.head is None or linked_list.head.next is None:
+        print("Data lowongan terlalu sedikit untuk diurutkan.")
+        return
 
-    # Perulangan utama Bubble Sort
-    i = 0
+    print("\nUrutkan Berdasarkan:")
+    print("1. Gaji (Tertinggi ke Terendah)")
+    print("2. Tanggal (Terbaru ke Terlama)")
+    pilihan = input("Pilih metode urut (1/2): ")
 
-    while i < panjang:
-
-        # Indeks untuk membandingkan elemen yang berdekatan
-        j = 0
-
-        while j < panjang - 1:
-
-            # Jika gaji saat ini lebih kecil dari gaji berikutnya
-            # maka posisi kedua data ditukar
-            if data[j].gaji < data[j + 1].gaji:
-
-                sementara = data[j]
-                data[j] = data[j + 1]
-                data[j + 1] = sementara
-
-            # Pindah ke pasangan data berikutnya
-            j = j + 1
-
-        # Melanjutkan ke putaran berikutnya
-        i = i + 1
+    diurutkan = True
+    while diurutkan:
+        diurutkan = False
+        current = linked_list.head
+        
+        while current.next is not None:
+            kondisi = False
+            if pilihan == "1":
+                # Sort berdasarkan Gaji (Descending)
+                if current.data.gaji < current.next.data.gaji:
+                    kondisi = True
+            elif pilihan == "2":
+                # Sort berdasarkan Tanggal (String Descending)
+                if current.data.tanggal < current.next.data.tanggal:
+                    kondisi = True
+            
+            if kondisi:
+                # Tukar data antar objek di dalam node
+                sementara = current.data
+                current.data = current.next.data
+                current.next.data = sementara
+                diurutkan = True
+                
+            current = current.next
+            
+    print("[+] Daftar lowongan berhasil diurutkan! Silakan cek perubahannya di Menu 3.")

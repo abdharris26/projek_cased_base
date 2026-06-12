@@ -1,12 +1,6 @@
 # ==================================================
 # IMPORT STRUCTURES
 # ==================================================
-# Queue digunakan untuk menyimpan antrian lamaran
-from structures.queue import Queue
-# Stack digunakan untuk fitur Undo Apply
-from structures.stack import Stack
-
-# ==================================================
 # FUNGSI APPLY LOWONGAN
 # ==================================================
 def apply_job(antrian, undo, nama, pekerjaan):

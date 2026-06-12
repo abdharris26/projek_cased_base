@@ -1,10 +1,6 @@
 # ==================================================
 # IMPORT STRUCTURES
 # ==================================================
-# HashTable digunakan untuk menyimpan data akun
-from structures.hash_table import HashTable
-
-# ==================================================
 # FUNGSI LOGIN
 # ==================================================
 def login(akun):

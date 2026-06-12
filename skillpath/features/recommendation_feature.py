@@ -3,8 +3,6 @@
 # ==================================================
 # Graph digunakan untuk menyimpan relasi skill
 # dan memberikan rekomendasi pekerjaan
-from structures.graph import Graph
-
 # ==================================================
 # FITUR REKOMENDASI PEKERJAAN
 # ==================================================

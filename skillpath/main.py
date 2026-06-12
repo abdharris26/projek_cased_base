@@ -1,3 +1,7 @@
+
+from utils.sorting import sorting_lowongan
+from utils.searching import cari_lowongan_by_keyword
+
 #==================================================
 #IMPORT STRUCTURES
 #==================================================
@@ -23,17 +27,8 @@ from features.statistics_feature import statistik_lowongan
 from features.lowongan_feature import (
     tambah_lowongan, 
     edit_lowongan, 
-    hapus_lowongan, 
-    sorting_lowongan, 
-    cari_lowongan_by_keyword
+    hapus_lowongan
 )
-
-#==================================================
-#IMPORT MODELS
-#==================================================
-from models.lowongan import Lowongan
-from models.pelamar import Pelamar
-from models.hrd import HRD
 
 #==================================================
 #ININISIALISASI DATA STRUCTURES
